@@ -1,15 +1,15 @@
 <template>
   <div class="w-full bg-gray-600 h-20 flex items-center justify-between p-6">
-    <h1 class="font-bold">♥️ ♦️ POKER PLANNING ♠️ ♣️</h1>
-    <div v-if="user" class="text-center">
-      <div v-if="props.online" class="flex items-center text-xs">
-        <div class="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
-        <p>Online</p>
+    <nuxt-link to="/" class="font-bold">♥️ ♦️ POKER PLANNING ♠️ ♣️</nuxt-link>
+    <div v-if="Object.keys(user).length" class="text-center">
+      <div class="flex items-center text-xs">
+        <div
+          class="w-2 h-2 rounded-full mr-2"
+          :class="$socket.connected ? 'bg-green-500' : 'bg-red-500'"
+        ></div>
+        <span>Server {{ $socket.connected ? "Online" : "Offline" }}</span>
       </div>
-      <div v-else class="flex items-center text-xs">
-        <div class="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-        <p>Offline</p>
-      </div>
+
       <div class="flex items-center justify-end">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -18,6 +18,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-4 h-4 mr-2"
+          :class="user?.online ? 'text-green-500' : 'text-red-500'"
         >
           <path
             stroke-linecap="round"
@@ -32,17 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-import type { PropType } from "vue";
-
-const props = defineProps({
-  user: {
-    type: Object as PropType<User>,
-    required: true,
-  },
-  online: {
-    type: Boolean,
-    required: true,
-  },
-});
+const { $socket }: any = useNuxtApp();
+const user = computed(() => useUserStore().getUser)
 </script>

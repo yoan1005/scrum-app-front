@@ -1,7 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false,
   devtools: { enabled: true },
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@pinia/nuxt'],
   plugins: [
     '~/plugins/socketio.ts',
   ],
@@ -9,9 +10,5 @@ export default defineNuxtConfig({
     public: {
       socketServer: process.env.SOCKET_SERVER,
     }
-  },
-  ui: {
-    primary: 'green',
-    gray: 'cool'
   }
 })
