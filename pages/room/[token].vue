@@ -24,11 +24,16 @@ $socket.on("room:joined", ({ room, user }: any) => {
 $socket.on("room:refreshed", ({ room }: any) => {
   session.value = room
 });
-
+const isModerator = computed(() => {
+  return (session.value.moderators) ? session.value.moderators.includes(useUserStore().getUser.token) : false
+})
 </script>
 
 <template>
   <div>
+    <div v-if="isModerator">
+      Modérateur 
+    </div>
     <h1>{{ session.name }}</h1>
     <div>
       <h2>Participants</h2>
