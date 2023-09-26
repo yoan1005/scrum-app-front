@@ -1,7 +1,7 @@
 <template>
   <div class="w-full bg-gray-600 h-20 flex items-center justify-between p-6">
     <nuxt-link to="/" class="font-bold">♥️ ♦️ POKER PLANNING ♠️ ♣️</nuxt-link>
-    <div v-if="Object.keys(user).length" class="text-center">
+    <div v-if="user" class="text-center">
       <div class="flex items-center text-xs">
         <div
           class="w-2 h-2 rounded-full mr-2"
@@ -33,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from "@/stores/userStore";
 const { $socket }: any = useNuxtApp();
-const user = computed(() => useUserStore().getUser)
+const user = computed(() => useUserStore().$state.user ?? null);
 </script>

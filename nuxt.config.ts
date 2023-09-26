@@ -10,5 +10,12 @@ export default defineNuxtConfig({
     public: {
       socketServer: process.env.SOCKET_SERVER,
     }
+  },
+  pinia: {
+    autoImports: [
+      // automatically imports `defineStore`
+      'defineStore', // import { defineStore } from 'pinia'
+      ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
+    ],
   }
 })

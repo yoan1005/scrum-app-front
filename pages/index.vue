@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from "@nuxt/ui/dist/runtime/types";
 const { $socket }: any = useNuxtApp();
+import { useUserStore } from "~/stores/userStore";
 const router = useRouter();
+
 const stateLogin = ref({
-  pseudo: useUserStore().getUser.pseudo,
+  pseudo: useUserStore().$state.user.pseudo,
   roomId: undefined,
 });
 const stateRoom = ref({
-  pseudo: useUserStore().getUser.pseudo,
+  pseudo: useUserStore().$state.user.pseudo,
   name: "",
 });
 
@@ -21,27 +23,25 @@ const validate = (state: any): FormError[] => {
 async function login(event: FormSubmitEvent<any>) {
   const { pseudo, roomId } = event.data;
   $socket.emit("room:join", {
-    token: useUserStore().getUser.token,
+    token: useUserStore().$state.user.token,
     pseudo,
     roomId,
   });
 }
 async function createRoom(event: FormSubmitEvent<any>) {
   const { pseudo, name } = event.data;
-  $socket.emit("room:create", { 
+  $socket.emit("room:create", {
     pseudo,
     name,
-    user: useUserStore().getUser
-   });
+    user: useUserStore().getUser,
+  });
 }
 
-$socket.on("room:created", ({ room, user }: any) => {
-  useUserStore().setUser(user);
+$socket.on("room:created", ({ room }: any) => {
   router.push(`/room/${room.token}`);
 });
 
-$socket.on("room:joined", ({ room, user }: any) => {
-  useUserStore().setUser(user);
+$socket.on("room:joined", ({ room }: any) => {
   router.push(`/room/${room.token}`);
 });
 </script>
@@ -55,7 +55,6 @@ $socket.on("room:joined", ({ room, user }: any) => {
       </p>
       <br />
       <UForm :state="stateRoom" @submit="createRoom">
-        
         <UFormGroup class="text-left mb-3" name="name" required>
           <UInput
             color="white"

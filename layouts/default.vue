@@ -1,16 +1,16 @@
 <script setup lang="ts">
-const user = useUserStore().getUser;
 const { $socket }: any = useNuxtApp();
-const toast = useToast()
+const toast = useToast();
 
-$socket.on('error', (error: any) => {
+$socket.on("error", (error: any) => {
   toast.add({
-    id: 'error',
-    title: 'Oups, something went wrong!',
+    id: "error",
+    title: "Oups, something went wrong!",
     description: error.message,
-    icon: 'i-heroicons-exclamation-triangle text-red-500',
-    timeout: 0
-  })
+    icon: "i-heroicons-exclamation-triangle text-red-500",
+    timeout: 3000,
+    color: "red",
+  });
 });
 </script>
 
