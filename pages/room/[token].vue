@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { $socket } = useNuxtApp();
-import { useUserStore } from "~/stores/userStore";
+import { useUserStore } from "@/stores/userStore";
 const route = useRoute();
 const session = ref({});
 const me = computed(() => useUserStore().$state.user ?? null);
@@ -38,6 +38,9 @@ const isModerator = computed(() => {
     ? session.value.moderators.includes(me.value.token)
     : false;
 });
+
+const lastUserVote = (user) =>
+  !revealed.value && user.token !== me.value.token ? "?" : user.lastVote;
 
 const cards = [
   "0",
@@ -81,50 +84,63 @@ const reset = () => {
 </script>
 
 <template>
-  <div v-if="session.token" class="flex flex-col h-full justify-between">
-    <div>
-      <h1>{{ session.name }}</h1>
-    </div>
-    <div class="h-full">
-      <h2>Participants</h2>
-      <ul>
-        <li v-for="user in session.users" :key="user.id">
-          {{ user.pseudo }}
-          <span v-if="user.lastVote"
-            >({{
-              !revealed && user.token !== me.token ? "?" : user.lastVote
-            }})</span
+  <UCard v-if="session.token" class="text-black">
+    <template #header>
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">{{ session.name }}</h1>
+        <div v-if="isModerator">
+          <UButton
+            v-if="!revealed"
+            color="blue"
+            variant="solid"
+            @click="reveal()"
           >
+            Reveal
+          </UButton>
+          <UButton
+            v-if="revealed"
+            color="orange"
+            variant="solid"
+            @click="reset()"
+          >
+            Reset
+          </UButton>
+        </div>
+      </div>
+    </template>
+    <div></div>
+    <div class="h-full">
+      <ul class="flex gap-x-4">
+        <li v-for="user in session.users" :key="user.id">
+          <div class="flex flex-col justify-center items-center">
+            <UAvatar
+              v-if="user.lastVote"
+              size="3xl"
+              :text="lastUserVote(user)"
+              :chip-color="user.online ? 'green' : 'red'"
+            />
+            <UAvatar
+              v-else
+              :src="user.avatar"
+              size="3xl"
+              :chip-color="user.online ? 'green' : 'red'"
+            />
+            <span class="ml-2">{{ user.pseudo }}</span>
+          </div>
         </li>
       </ul>
     </div>
-    <div class="card flex items-center w-full p-4">
-      <p v-if="isModerator">
-        <UButton
-          v-if="!revealed"
-          color="blue"
-          variant="solid"
-          @click="reveal()"
+    <template #footer>
+      <div class="card flex items-center w-full p-4">
+        <div
+          v-for="card in cards"
+          :key="card"
+          class="mx-3 w-12 h-20 bg-blue-500 text-white font-bold flex items-center justify-center border-2 border-gray-200 shadow-md rounded-md cursor-pointer transition duration-300 transform hover:-translate-y-3"
+          @click="vote(card)"
         >
-          Reveal
-        </UButton>
-        <UButton
-          v-if="revealed"
-          color="orange"
-          variant="solid"
-          @click="reset()"
-        >
-          Reset
-        </UButton>
-      </p>
-      <div
-        v-for="card in cards"
-        :key="card"
-        class="mx-3 w-12 h-20 bg-blue-500 text-white font-bold flex items-center justify-center border-2 border-gray-200 shadow-md rounded-md cursor-pointer transition duration-300 transform hover:-translate-y-3"
-        @click="vote(card)"
-      >
-        {{ card }}
+          {{ card }}
+        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </UCard>
 </template>
