@@ -184,7 +184,9 @@ const reset = () => {
               session.users
                 .filter((user) => user.lastVote && !isNaN(user.lastVote))
                 .reduce((acc, user) => acc + parseFloat(user.lastVote), 0) /
-              session.users.filter((user) => user.lastVote).length
+              session.users.filter(
+                (user) => user.lastVote && !isNaN(user.lastVote)
+              ).length
             }}
           </b>
         </p>
