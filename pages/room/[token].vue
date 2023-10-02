@@ -49,6 +49,18 @@ const avgVotes = computed(() => {
   );
 });
 
+const firework = computed(() => {
+  return session.value.users
+    .filter((user) => user.lastVote && !isNaN(user.lastVote))
+    .every(
+      (val) =>
+        val.lastVote ==
+        session.value.users.filter(
+          (user) => user.lastVote && !isNaN(user.lastVote)
+        )[0].lastVote
+    );
+});
+
 const lastUserVote = (user) =>
   !revealed.value && user.token !== me.value.token ? "👀" : user.lastVote;
 
@@ -193,5 +205,6 @@ const reset = () => {
         </p>
       </template>
     </UAlert>
+    <Fireworks v-if="revealed && firework" />
   </section>
 </template>
