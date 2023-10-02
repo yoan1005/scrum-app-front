@@ -18,7 +18,6 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     setUser (newUser: User) {
-      console.log('setUser', newUser);
       Object.assign(this.user, newUser)      
       if(process.client) localStorage.setItem('user', JSON.stringify(newUser))
       this.headerKey = new Date().getTime()
