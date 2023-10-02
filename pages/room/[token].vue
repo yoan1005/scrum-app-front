@@ -40,7 +40,7 @@ const isModerator = computed(() => {
 });
 
 const lastUserVote = (user) =>
-  !revealed.value && user.token !== me.value.token ? "?" : user.lastVote;
+  !revealed.value && user.token !== me.value.token ? "👀" : user.lastVote;
 
 const cards = [
   "0",
@@ -115,7 +115,7 @@ const reset = () => {
           </div>
         </div>
       </template>
-      <div></div>
+
       <div class="h-full">
         <ul class="flex gap-x-4">
           <li v-for="user in session.users" :key="user.id">
