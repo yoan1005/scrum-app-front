@@ -85,7 +85,11 @@ const reset = () => {
 
 <template>
   <section class="flex flex-col items-start h-full">
-    <UCard v-if="session.token" class="text-black mt-12">
+    <UCard
+      v-if="session.token"
+      class="dark:text-white text-black mt-12"
+      color="white"
+    >
       <template #header>
         <div class="flex justify-between items-center">
           <h1 class="text-2xl font-bold">{{ session.name }}</h1>
@@ -94,6 +98,7 @@ const reset = () => {
               v-if="!revealed"
               color="blue"
               variant="solid"
+              class="dark:text-white"
               @click="reveal()"
             >
               Reveal votes
@@ -102,6 +107,7 @@ const reset = () => {
               v-if="revealed"
               color="orange"
               variant="solid"
+              class="dark:text-white"
               @click="reset()"
             >
               Start new vote
