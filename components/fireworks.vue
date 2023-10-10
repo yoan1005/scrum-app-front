@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed h-1/2 w-full bottom-0 left-0 right-0 z-50">
+  <div class="fixed h-1/2 w-full bottom-0 left-0 right-0 z-30">
     <div class="firework-1"></div>
     <div class="firework-2"></div>
     <div class="firework-3"></div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full bg-gray-600 h-20 flex items-center justify-between p-6">
+  <div class="w-full bg-gray-600 h-20 flex items-center justify-between p-6 z-50">
     <nuxt-link to="/" class="font-bold">♥️ ♠️ POKER PLANNING ♦️ ♣️</nuxt-link>
     <div v-if="user" class="text-center">
       <div class="flex items-center text-xs">

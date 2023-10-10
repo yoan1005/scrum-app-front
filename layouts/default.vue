@@ -19,7 +19,7 @@ $socket.on("error", (error: any) => {
     class="antialiased text-gray-900 text-white bg-slate-800 h-screen w-screen flex flex-col"
   >
     <Header />
-    <div class="flex items-center justify-center h-full max-w-7xl mx-auto">
+    <div class="flex items-center justify-center h-full max-w-8xl mx-auto">
       <slot />
     </div>
     <UNotifications />
