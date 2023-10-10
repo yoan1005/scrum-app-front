@@ -46,7 +46,7 @@ const avgVotes = computed(() => {
       .reduce((acc, user) => acc + parseFloat(user.lastVote), 0) /
     session.value.users.filter((user) => user.lastVote && !isNaN(user.lastVote))
       .length
-  );
+  ).toFixed(2);
 });
 
 const firework = computed(() => {
