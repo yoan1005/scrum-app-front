@@ -6,6 +6,7 @@ const session = ref({});
 const me = computed(() => useUserStore().$state.user ?? null);
 
 const revealed = ref(false);
+const surpriseMe = ref(false);
 
 watch(
 () => me.value.online,
@@ -31,6 +32,24 @@ $socket.on("room:revealing", ({ room }) => {
 $socket.on("room:reseted", ({ room }) => {
   session.value = room;
   revealed.value = false;
+});
+
+$socket.on("room:user_reacted", ({ user, emoji }) => {
+  if (user.token === me.value.token) return;
+  //  client only
+  if (process.client) {
+    
+    setTimeout(() => {
+      const emojiElement = document.createElement("div");
+      emojiElement.innerHTML = emoji;
+      emojiElement.classList.add("emoji");
+      emojiElement.style.left = `${Math.round(Math.random() * 100)}%`;
+      document.body.appendChild(emojiElement);
+      setTimeout(() => {
+        emojiElement.remove();
+      }, 2000);
+    }, 100);
+  }
 });
 
 const isModerator = computed(() => {
@@ -103,6 +122,14 @@ const reset = () => {
     roomId: session.value.token,
   });
 };
+
+const launchEmoji = (emoji) => {
+  $socket.emit("room:user_react", {
+    token: me.value.token,
+    roomId: session.value.token,
+    emoji
+  });
+};
 </script>
 
 <template>
@@ -133,14 +160,17 @@ const reset = () => {
             Reveal votes
           </UButton>
         </div>
-        <UButton
-            v-else-if="user.token !== me.token"
-            color="orange"
-            variant="solid"
-            class="dark:text-white"
+        <div v-else-if="user.token === me.token && !isModerator" class="mx-auto text-center">
+          <UButton
+          color="orange"
+          variant="solid"
+          class="dark:text-white"
+          @click="surpriseMe = !surpriseMe"
           >
           Surprise !
         </UButton>
+        <EmojiPicker v-show="!surpriseMe" @launch="launchEmoji"/>
+      </div>
       </div>
     </div> 
   </div>
@@ -225,4 +255,27 @@ const reset = () => {
   background: radial-gradient(circle, rgba(36,171,39,1) 0%, rgba(71,135,4,1) 50%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#24ab27",endColorstr="#478704",GradientType=1);
 } 
+
+.emoji {
+  position: fixed;
+  z-index: 9999;
+  bottom: 0%;
+  transform: translate(-50%, -50%);
+  animation: emoji 2s ease-in-out;
+}
+
+/* animation css for fly to up  */
+@keyframes emoji {
+  0% {
+    bottom: 0%;
+    opacity: 1;
+    font-size: 3em;
+  }
+  100% {
+    bottom: 100%;
+    opacity: 0;
+    font-size: 0em;
+  }
+}
+
 </style>
