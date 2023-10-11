@@ -76,7 +76,7 @@ const handleEmojiClick = (e: Event, emoji: string) => {
 .picker_container
 {
   position: relative;
-  padding: 1rem;
+  padding: .75rem;
   overflow: auto;
   z-index: 1;
 }
@@ -85,7 +85,7 @@ const handleEmojiClick = (e: Event, emoji: string) => {
 {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  margin-bottom: .5rem;
   color: rgb(169, 169, 169);
 }
 
@@ -93,16 +93,18 @@ const handleEmojiClick = (e: Event, emoji: string) => {
 {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .category button
 {
-  margin: 0.25rem;
+  margin: 6px;
   margin-left: 0;
   background: inherit;
   border: none;
-  font-size: 1rem;
+  font-size: 18px;
   padding: 0;
+  cursor: pointer;
 }
 
 .bottom_arrow

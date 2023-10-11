@@ -35,7 +35,6 @@ $socket.on("room:reseted", ({ room }) => {
 });
 
 $socket.on("room:user_reacted", ({ user, emoji }) => {
-  if (user.token === me.value.token) return;
   //  client only
   if (process.client) {
     
@@ -129,6 +128,7 @@ const launchEmoji = (emoji) => {
     roomId: session.value.token,
     emoji
   });
+  surpriseMe.value = false;
 };
 </script>
 
@@ -137,7 +137,7 @@ const launchEmoji = (emoji) => {
     <div class="table fixed inset-0 h-full w-full"></div>
     
     <div class="w-full h-[60vh] mt-8 relative grid grid-cols-5 gap-4">
-      <div v-for="user in session.users" :key="user.token" class="bg-gray-800 h-52 rounded-lg shadow-md p-4 text-white transition-transform transform hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-between"> 
+      <div v-for="user in session.users" :key="user.token" class="w-52 bg-gray-800 h-52 rounded-lg shadow-md p-4 text-white transition-transform transform hover:-translate-y-2 cursor-pointer flex flex-col items-center justify-between"> 
         
         <div class="flex flex-col items-center gap-2">
           <div
@@ -146,7 +146,7 @@ const launchEmoji = (emoji) => {
           v-html="lastUserVote(user)"
           ></div>
           <img v-else :src="user.avatar" class="bg-gray-200 w-20 h-20 rounded-full flex items-center justify-center object-cover overflow-hidden" />
-          <p class="text-lg font-bold">{{ user.pseudo }}</p>
+          <p class="text-base font-bold">{{ user.pseudo }}</p>
         </div>
         <div class="actions mt-4 space-x-2">
           <div v-if="isModerator && me.token === user.token">
@@ -162,14 +162,14 @@ const launchEmoji = (emoji) => {
         </div>
         <div v-else-if="user.token === me.token && !isModerator" class="mx-auto text-center">
           <UButton
-          color="orange"
+          color="yellow"
           variant="solid"
           class="dark:text-white"
           @click="surpriseMe = !surpriseMe"
           >
-          Surprise !
+          React !
         </UButton>
-        <EmojiPicker v-show="!surpriseMe" @launch="launchEmoji"/>
+        <EmojiPicker v-show="surpriseMe" @launch="launchEmoji"/>
       </div>
       </div>
     </div> 
