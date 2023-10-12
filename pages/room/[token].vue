@@ -64,7 +64,7 @@ const avgVotes = computed(() => {
   .reduce((acc, user) => acc + parseFloat(user.lastVote), 0) /
   session.value.users.filter((user) => user.lastVote && !isNaN(user.lastVote))
   .length
-  ).toFixed(2);
+  ) 
 });
 
 const firework = computed(() => {
@@ -182,7 +182,7 @@ const launchEmoji = (emoji) => {
       class="mx-3 w-16 h-24 bg-green-800 text-xl text-white font-bold flex items-center justify-center border-2 border-gray-200 shadow-md rounded-md cursor-pointer transition duration-300 transform hover:-translate-y-3 p-1"
       :class="
       revealed && card >= avgVotes && cards[index - 1] < avgVotes
-      ? 'bg-blue-700 -translate-y-3 '
+      ? 'bg-blue-700 -translate-y-3 cardReveal'
       : ''
       "
       @click="vote(card)"
@@ -232,7 +232,7 @@ const launchEmoji = (emoji) => {
             .reduce((acc, user) => acc + parseFloat(user.lastVote), 0)
           }}
           / Avg:
-          {{ avgVotes }}
+          {{ avgVotes.toFixed(2) }}
         </b>
       </p>
     </div>
@@ -261,7 +261,7 @@ const launchEmoji = (emoji) => {
   z-index: 9999;
   bottom: 0%;
   transform: translate(-50%, -50%);
-  animation: emoji 2s ease-in-out;
+  animation: emoji 2.3s ease-in-out;
 }
 
 /* animation css for fly to up  */
@@ -269,12 +269,26 @@ const launchEmoji = (emoji) => {
   0% {
     bottom: 0%;
     opacity: 1;
-    font-size: 3em;
+    font-size: 3.3em;
   }
   100% {
     bottom: 100%;
     opacity: 0;
-    font-size: 0em;
+    font-size: .3em;
+  }
+}
+
+.cardReveal {
+  animation: cardReveal 1s ease-in-out forwards;
+}
+
+@keyframes cardReveal {
+  0% { 
+    transform: scale(1);
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1.5);
+    z-index: 9999;
   }
 }
 
