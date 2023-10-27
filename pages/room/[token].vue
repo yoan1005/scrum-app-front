@@ -195,7 +195,7 @@ const launchEmoji = (emoji) => {
     <UAlert
     title="<i>Reveal !</i>"
     icon="i-heroicons-sparkles"
-    class="mt-5 fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-2/3 h-30 z-50"
+    class="mt-5 fixed left-1/2 top-32 transform -translate-x-1/2 -translate-y-1/2 z-50 w-2/3 h-30 z-50"
     >
     <template #title="{ title }">
       <span v-html="title" />
