@@ -191,11 +191,11 @@ const launchEmoji = (emoji) => {
     </div>
   </div> 
   <!-- class for modal overlay  -->
-  <div v-if="session && revealed" class="bg-black bg-opacity-50 fixed inset-0">
+  <div v-if="session && revealed" class="bg-black bg-opacity-50 fixed inset-0 z-50">
     <UAlert
     title="<i>Reveal !</i>"
     icon="i-heroicons-sparkles"
-    class="mt-5 fixed left-1/2 top-32 transform -translate-x-1/2 -translate-y-1/2 z-50 w-2/3 h-30 z-50"
+    class="mt-5 fixed left-1/2 top-0 transform -translate-x-1/2 w-1/3 h-30 z-50"
     >
     <template #title="{ title }">
       <span v-html="title" />
